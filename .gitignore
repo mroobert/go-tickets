@@ -1,15 +1,41 @@
-# Binaries for programs and plugins
-*.exe
-*.exe~
-*.dll
+# VSCode
+.vscode 
+
+# Binaries
+app/service/auth-api/auth-api
+
+# Mac
+.DS_Store
+
+# Backup files
+*~*
+
+# Compiled Object files, Static and Dynamic libs (Shared Objects)
+*.o
+*.a
 *.so
-*.dylib
+act
+# Folders
+_obj
+_test
 
-# Test binary, built with `go test -c`
-*.test
+# Editor files
+.idea/
+*.iml
+*.swp
 
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
+# Architecture specific extensions/prefixes
+*.[568vq]
+[568vq].out
 
-# Dependency directories (remove the comment below to include it)
-# vendor/
+*.cgo1.go
+*.cgo2.c
+_cgo_defun.c
+_cgo_gotypes.go
+_cgo_export.*
+
+_testmain.go
+
+*.exe
+//*.test
+.vscode/tasks.json

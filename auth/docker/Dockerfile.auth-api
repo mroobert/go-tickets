@@ -1,0 +1,17 @@
+# Build the Go Binary.
+FROM golang:1.17.6 as build_auth-api
+ENV CGO_ENABLED 0
+ARG BUILD_REF
+
+COPY . /app/
+
+# Build the service binary.
+WORKDIR /app/cmd/server
+RUN go build -ldflags "-X main.build=${BUILD_REF}" -o auth-api
+
+# Run the Go Binary in Alpine.
+FROM alpine:3.14
+ARG BUILD_REF
+COPY --from=build_auth-api /app/cmd/server/auth-api /server/
+WORKDIR /server
+CMD ["./auth-api"]

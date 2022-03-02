@@ -1,0 +1,11 @@
+{
+    "VERSION": "develop",
+    "WEB": {
+        "API_HOST": "0.0.0.0:3000",
+        "DEBUG_HOST": "0.0.0.0:8080",
+        "READ_TIMEOUT": "5s", 
+        "WRITE_TIMEOUT": "10s",
+        "IDLE_TIMEOUT": "120s",
+        "SHUTDOWN_TIMEOUT": "20s"
+    }
+}

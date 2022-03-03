@@ -12,6 +12,7 @@ RUN go build -ldflags "-X main.build=${BUILD_REF}" -o auth-api
 # Run the Go Binary in Alpine.
 FROM alpine:3.14
 ARG BUILD_REF
+COPY --from=build_auth-api /app/cmd/server/server.json /server/
 COPY --from=build_auth-api /app/cmd/server/auth-api /server/
 WORKDIR /server
 CMD ["./auth-api"]

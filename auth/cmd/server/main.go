@@ -45,7 +45,6 @@ func run(log *zap.SugaredLogger) error {
 
 	// =========================================================================
 	// Configuration
-
 	cfg := struct {
 		Version string `mapstructure:"VERSION"`
 		Web     struct {
@@ -60,7 +59,7 @@ func run(log *zap.SugaredLogger) error {
 		Version: build,
 	}
 
-	viper.AddConfigPath("./cmd/server/")
+	viper.AddConfigPath(".")
 	viper.SetConfigName("server")
 	viper.SetConfigType("json")
 
@@ -76,7 +75,6 @@ func run(log *zap.SugaredLogger) error {
 
 	// =========================================================================
 	// App Starting
-
 	log.Infow("startup", "GOMAXPROCS", runtime.GOMAXPROCS(0), "config", cfg)
 	defer log.Infow("shutdown complete")
 
@@ -84,6 +82,8 @@ func run(log *zap.SugaredLogger) error {
 
 	// =========================================================================
 	// Initialize Firebase Support
+	os.Setenv("FIREBASE_AUTH_EMULATOR_HOST", "localhost:9099")
+	os.Setenv("GCLOUD_PROJECT", "demo-test")
 
 	fbClient, err := firebase.NewApp(context.Background(), nil)
 	if err != nil {

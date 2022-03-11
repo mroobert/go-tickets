@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
-run-default: 
-	go run cmd/server/main.go
+run: 
+	go run cmd/server/main.go | go run ../tooling/cmd/main.go
 
 # ==============================================================================
 # Modules support

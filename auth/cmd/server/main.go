@@ -24,7 +24,6 @@ import (
 1. Need to figure out timeouts for http service after a load testing.
 2. Need to add metrics middleware.
 3. Need to add panics middleware.
-4. Need to add logger middleware.
 */
 
 var build = "develop"

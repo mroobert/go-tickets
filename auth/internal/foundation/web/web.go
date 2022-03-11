@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"os"
 	"syscall"
+	"time"
 
 	"github.com/dimfeld/httptreemux/v5"
 	"github.com/google/uuid"
@@ -57,6 +58,7 @@ func (a *AppMux) Handle(method string, group string, path string, handler Handle
 		// process the request.
 		v := Values{
 			TraceID: uuid.New().String(),
+			Now:     time.Now().UTC(),
 		}
 		ctx = context.WithValue(ctx, key, &v)
 

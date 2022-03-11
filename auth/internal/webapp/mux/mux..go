@@ -21,7 +21,10 @@ type APIMuxConfig struct {
 
 // APIMux constructs a mux with all application routes defined.
 func APIMux(cfg APIMuxConfig) *web.AppMux {
-	mux := web.NewAppMux(cfg.Shutdown, mid.Errors(cfg.Log))
+	mux := web.NewAppMux(cfg.Shutdown,
+		mid.Logger(cfg.Log),
+		mid.Errors(cfg.Log),
+	)
 
 	const group = "api"
 	mux.Handle(http.MethodPost, group, "/signup", cfg.SignUpHandler)

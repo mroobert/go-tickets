@@ -24,6 +24,7 @@ func APIMux(cfg APIMuxConfig) *web.AppMux {
 	mux := web.NewAppMux(cfg.Shutdown,
 		mid.Logger(cfg.Log),
 		mid.Errors(cfg.Log),
+		mid.Panics(),
 	)
 
 	const group = "api"

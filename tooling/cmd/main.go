@@ -11,12 +11,6 @@ import (
 	"strings"
 )
 
-var service string
-
-func init() {
-	flag.StringVar(&service, "service", "", "filter which service to see")
-}
-
 func main() {
 	flag.Parse()
 	var b strings.Builder
@@ -30,18 +24,10 @@ func main() {
 		m := make(map[string]interface{})
 		err := json.Unmarshal([]byte(s), &m)
 		if err != nil {
-			if service == "" {
-				fmt.Println(s)
-			}
-			continue
+			fmt.Println(err)
 		}
 
-		// If a service filter was provided, check.
-		if service != "" && m["service"] != service {
-			continue
-		}
-
-		// I like always having a traceid present in the logs.
+		// Having a traceid present in the logs.
 		traceID := "00000000-0000-0000-0000-000000000000"
 		if v, ok := m["traceid"]; ok {
 			traceID = fmt.Sprintf("%v", v)

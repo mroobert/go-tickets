@@ -1,20 +1,17 @@
 package signup
 
-import (
-	fbauthn "firebase.google.com/go/v4/auth"
-)
-
+// user represents a domain entity.
 type user struct {
 	UID         string
 	Email       string
 	DisplayName string
 }
 
-func fbToUser(u *fbauthn.UserRecord) user {
-	user := user{
-		UID:         u.UID,
+// userToSignUpResponseDto transforms user domain struct into signup response (dto).
+func userToSignUpResponseDto(u user) signUpResponseDto {
+	dto := signUpResponseDto{
 		Email:       u.Email,
 		DisplayName: u.DisplayName,
 	}
-	return user
+	return dto
 }

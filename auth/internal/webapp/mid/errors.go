@@ -31,8 +31,8 @@ func Errors(log *zap.SugaredLogger) func(handler web.Handler) web.Handler {
 			if err := handler(ctx, w, r); err != nil {
 
 				// Log the error.
-				log.Errorw("ERROR", "traceid", v.TraceID, "ERROR", err)
-				//fmt.Println(v)
+				log.Errorw("ERROR", "traceid", v.TraceID, "Handler", err)
+
 				// Build out the error response.
 				var er webapp.ErrorResponse
 				var status int

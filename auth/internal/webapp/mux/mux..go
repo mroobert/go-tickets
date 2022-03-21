@@ -15,6 +15,7 @@ import (
 // APIMuxConfig contains all the mandatory systems required by handlers.
 type APIMuxConfig struct {
 	SignUpHandler web.Handler
+	SignInHandler web.Handler
 	Log           *zap.SugaredLogger
 	Shutdown      chan os.Signal
 }
@@ -29,6 +30,7 @@ func APIMux(cfg APIMuxConfig) *web.AppMux {
 
 	const group = "api"
 	mux.Handle(http.MethodPost, group, "/signup", cfg.SignUpHandler)
+	mux.Handle(http.MethodPost, group, "/signin", cfg.SignInHandler)
 
 	return mux
 }

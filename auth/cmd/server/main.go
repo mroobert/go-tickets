@@ -14,6 +14,7 @@ import (
 	firebase "firebase.google.com/go/v4"
 	"github.com/ardanlabs/conf/v3"
 	"github.com/mroobert/go-tickets/auth/internal/foundation/logger"
+	"github.com/mroobert/go-tickets/auth/internal/usecase/signin"
 	"github.com/mroobert/go-tickets/auth/internal/usecase/signup"
 	"github.com/mroobert/go-tickets/auth/internal/webapp/mux"
 	"go.uber.org/automaxprocs/maxprocs"
@@ -24,6 +25,7 @@ import (
 1. Need to figure out timeouts for http service after a load testing.
 2. Need to add metrics middleware.
 3. CSRF
+4. Check the "sign up" mapping functions
 */
 
 var build = "develop"
@@ -136,12 +138,18 @@ func run(log *zap.SugaredLogger) error {
 	signal.Notify(shutdown, syscall.SIGINT, syscall.SIGTERM)
 
 	// Construct the mux for the API calls.
-	ap := signup.NewFirebase(fbAuthClient)
-	s := signup.NewService(ap)
-	h := signup.HttpHandler(s)
+	fbSignUp := signup.NewFirebase(fbAuthClient)
+	serviceSignUp := signup.NewService(fbSignUp)
+	handlerSignUp := signup.HttpHandler(serviceSignUp)
+
+	fbSignIn := signin.NewFirebase(fbAuthClient)
+	serviceSignIn := signin.NewService(fbSignIn)
+	handlerSignIn := signin.HttpHandler(serviceSignIn)
+
 	apiMux := mux.APIMux(mux.APIMuxConfig{
 		Log:           log,
-		SignUpHandler: h,
+		SignUpHandler: handlerSignUp,
+		SignInHandler: handlerSignIn,
 	})
 
 	// Construct a server to service the requests.

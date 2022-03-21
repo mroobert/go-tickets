@@ -1,5 +1,4 @@
-// Package vstruct provides the "value objects" used by the signup.
-package vstruct
+package signup
 
 import (
 	"fmt"
@@ -11,9 +10,9 @@ import (
 
 // SignUpUser reprezents a "value object" inside domain.
 type SignUpUser struct {
-	email       string
-	password    string
-	displayName string
+	Email       string
+	Password    string
+	DisplayName string
 }
 
 // NewSignUpUser creates a new SignUpUser that is in a valid state.
@@ -48,9 +47,9 @@ func NewSignUpUser(email string, password string, displayName string) (SignUpUse
 	}
 
 	return SignUpUser{
-		email:       email,
-		password:    password,
-		displayName: displayName,
+		Email:       email,
+		Password:    password,
+		DisplayName: displayName,
 	}, nil
 }
 
@@ -79,9 +78,9 @@ func parsePassword(password string) (sixOrMore, number, upper, special bool) {
 //
 func ToFirebaseUser(su SignUpUser) fbauthn.UserToCreate {
 	newUser := fbauthn.UserToCreate{}
-	newUser.Email(su.email)
-	newUser.Password(su.password)
-	newUser.DisplayName(su.displayName)
+	newUser.Email(su.Email)
+	newUser.Password(su.Password)
+	newUser.DisplayName(su.DisplayName)
 
 	return newUser
 }

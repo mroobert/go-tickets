@@ -8,7 +8,6 @@ import (
 
 	fbauthn "firebase.google.com/go/v4/auth"
 	"github.com/mroobert/go-tickets/auth/internal/foundation/web"
-	"github.com/mroobert/go-tickets/auth/internal/usecase/signin/vstruct"
 )
 
 // (Adapter) HttpHandler transforms a "signin http request" into a "call on signin core service".
@@ -71,17 +70,17 @@ func (fb Firebase) VerifyToken(tkn string) (token, error) {
 }
 
 // SessionCookie creates a new firebase session cookie from the given token and expiry duration.
-func (fb Firebase) SessionCookie(tkn string, expiresIn time.Duration) (vstruct.Session, error) {
+func (fb Firebase) SessionCookie(tkn string, expiresIn time.Duration) (Session, error) {
 	// Create the session cookie. This will also verify the ID token in the process.
 	// The session cookie will have the same claims as the ID token.
 	value, err := fb.client.SessionCookie(context.Background(), tkn, expiresIn)
 	if err != nil {
-		return vstruct.Session{}, fmt.Errorf("failed to create a session cookie on firebase: %w", err)
+		return Session{}, fmt.Errorf("failed to create a session cookie on firebase: %w", err)
 	}
 
-	session, err := vstruct.NewSession(value, expiresIn)
+	session, err := NewSession(value, expiresIn)
 	if err != nil {
-		return vstruct.Session{}, fmt.Errorf("failed to create a session cookie: %w", err)
+		return Session{}, fmt.Errorf("failed to create a session cookie: %w", err)
 	}
 	return session, nil
 }

@@ -3,8 +3,6 @@ package signup
 import (
 	"context"
 	"fmt"
-
-	"github.com/mroobert/go-tickets/auth/internal/usecase/signup/vstruct"
 )
 
 // Service represents "signup" core service.
@@ -18,7 +16,7 @@ func NewService(ap AuthnProvider) *service {
 }
 
 // SignUp creates a new user.
-func (s *service) SignUp(ctx context.Context, su vstruct.SignUpUser) (user, error) {
+func (s *service) SignUp(ctx context.Context, su SignUpUser) (user, error) {
 	u, err := s.ap.Create(ctx, su)
 	if err != nil {
 		return user{}, fmt.Errorf("signup: %w", err)

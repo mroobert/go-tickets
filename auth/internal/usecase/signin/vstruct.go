@@ -1,5 +1,4 @@
-// Package vstruct provides the "value objects" used by the signin.
-package vstruct
+package signin
 
 import (
 	"fmt"

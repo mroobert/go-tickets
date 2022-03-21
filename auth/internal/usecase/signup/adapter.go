@@ -8,7 +8,6 @@ import (
 	fbauthn "firebase.google.com/go/v4/auth"
 	fberrors "firebase.google.com/go/v4/errorutils"
 	"github.com/mroobert/go-tickets/auth/internal/foundation/web"
-	"github.com/mroobert/go-tickets/auth/internal/usecase/signup/vstruct"
 )
 
 // signUpRequestDto represents the payload request contract.
@@ -19,10 +18,10 @@ type signUpRequestDto struct {
 }
 
 // dtoToUser transforms signup payload (dto) into user domain struct.
-func dtoToSignUpUser(dto signUpRequestDto) (vstruct.SignUpUser, error) {
-	su, err := vstruct.NewSignUpUser(dto.Email, dto.Password, dto.DisplayName)
+func dtoToSignUpUser(dto signUpRequestDto) (SignUpUser, error) {
+	su, err := NewSignUpUser(dto.Email, dto.Password, dto.DisplayName)
 	if err != nil {
-		return vstruct.SignUpUser{}, err
+		return SignUpUser{}, err
 	}
 	return su, nil
 }
@@ -80,8 +79,8 @@ func NewFirebase(client *fbauthn.Client) *Firebase {
 }
 
 // Create adds a new user in firebase with the specified properties.
-func (fb Firebase) Create(ctx context.Context, su vstruct.SignUpUser) (user, error) {
-	fbUser := vstruct.ToFirebaseUser(su)
+func (fb Firebase) Create(ctx context.Context, su SignUpUser) (user, error) {
+	fbUser := ToFirebaseUser(su)
 	u, err := fb.client.CreateUser(ctx, &fbUser)
 	if err != nil {
 		if fberrors.IsAlreadyExists(err) {

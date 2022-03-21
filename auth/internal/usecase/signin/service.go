@@ -3,8 +3,6 @@ package signin
 import (
 	"fmt"
 	"time"
-
-	"github.com/mroobert/go-tickets/auth/internal/usecase/signin/vstruct"
 )
 
 // Service represents "signin" core service.
@@ -18,16 +16,16 @@ func NewService(p authnProvider) *service {
 }
 
 // SignIn returns the session cookie.
-func (s *service) SignIn(token string) (vstruct.Session, error) {
+func (s *service) SignIn(token string) (Session, error) {
 	decoded, err := s.p.VerifyToken(token)
 	if err != nil {
 		//return v1Web.NewRequestError(auth.ErrInvalidToken, http.StatusUnauthorized)
-		return vstruct.Session{}, err
+		return Session{}, err
 	}
 
 	// Return error if the sign-in is older than 5 minutes.
 	if decoded.isOld() {
-		return vstruct.Session{}, fmt.Errorf("recent sign-in required")
+		return Session{}, fmt.Errorf("recent sign-in required")
 	}
 
 	// Set session expiration to 2 days.
@@ -37,7 +35,7 @@ func (s *service) SignIn(token string) (vstruct.Session, error) {
 	// The session cookie will have the same claims as the ID token.
 	ses, err := s.p.SessionCookie(token, expiresIn)
 	if err != nil {
-		return vstruct.Session{}, fmt.Errorf("failed to create a session cookie: %w", err)
+		return Session{}, fmt.Errorf("failed to create a session cookie: %w", err)
 	}
 
 	return ses, nil

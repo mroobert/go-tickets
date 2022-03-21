@@ -6,12 +6,3 @@ type user struct {
 	Email       string
 	DisplayName string
 }
-
-// userToSignUpResponseDto transforms user domain struct into signup response (dto).
-func userToSignUpResponseDto(u user) signUpResponseDto {
-	dto := signUpResponseDto{
-		Email:       u.Email,
-		DisplayName: u.DisplayName,
-	}
-	return dto
-}

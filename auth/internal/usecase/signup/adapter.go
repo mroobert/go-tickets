@@ -11,6 +11,37 @@ import (
 	"github.com/mroobert/go-tickets/auth/internal/usecase/signup/vstruct"
 )
 
+// signUpRequestDto represents the payload request contract.
+type signUpRequestDto struct {
+	Email       string `json:"email"`
+	Password    string `json:"password"`
+	DisplayName string `json:"displayName"`
+}
+
+// dtoToUser transforms signup payload (dto) into user domain struct.
+func dtoToSignUpUser(dto signUpRequestDto) (vstruct.SignUpUser, error) {
+	su, err := vstruct.NewSignUpUser(dto.Email, dto.Password, dto.DisplayName)
+	if err != nil {
+		return vstruct.SignUpUser{}, err
+	}
+	return su, nil
+}
+
+// signUpResponseDto represents the payload response contract.
+type signUpResponseDto struct {
+	Email       string `json:"email"`
+	DisplayName string `json:"displayName"`
+}
+
+// userToSignUpResponseDto transforms user domain struct into signup response (dto).
+func userToSignUpResponseDto(u user) signUpResponseDto {
+	dto := signUpResponseDto{
+		Email:       u.Email,
+		DisplayName: u.DisplayName,
+	}
+	return dto
+}
+
 // (Adapter) HttpHandler transforms a "signup http request" into a "call on signup core service".
 func HttpHandler(s Service) web.Handler {
 	return func(ctx context.Context, w http.ResponseWriter, r *http.Request) error {
@@ -59,14 +90,9 @@ func (fb Firebase) Create(ctx context.Context, su vstruct.SignUpUser) (user, err
 		return user{}, fmt.Errorf("firebase creating user: %w", err)
 	}
 
-	return fbToUser(u), nil
-}
-
-func fbToUser(u *fbauthn.UserRecord) user {
-	user := user{
+	return user{
 		UID:         u.UID,
 		Email:       u.Email,
 		DisplayName: u.DisplayName,
-	}
-	return user
+	}, nil
 }
